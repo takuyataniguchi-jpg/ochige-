@@ -13,6 +13,10 @@
             <h3>つぎのぷよ</h3>
             <canvas id="next-puyo-canvas" width="320" height="80"></canvas>
         </div>
+        <div id="info-container">
+            <p>スコア: <span id="score">0</span></p>
+            <p>レベル: <span id="level">1</span></p>
+        </div>
         <div id="game-container">
             <canvas id="game-canvas" width="320" height="640"></canvas>
             <div id="start-screen" class="overlay">
@@ -34,10 +38,6 @@
                 <p>スコア: <span id="final-score">0</span></p>
                 <button id="restart-button">もう一度遊ぶ</button>
             </div>
-        </div>
-        <div id="info-container">
-            <p>スコア: <span id="score">0</span></p>
-            <p>レベル: <span id="level">1</span></p>
         </div>
     </div>
     <audio id="game-bgm" src="ochikon.mp3" loop></audio>
