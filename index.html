@@ -8,7 +8,11 @@
 </head>
 <body>
     <h1>どうぶつぷよ</h1>
-    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+    <div id="main-content">
+        <div id="next-puyo-container">
+            <h3>つぎのぷよ</h3>
+            <canvas id="next-puyo-canvas" width="320" height="80"></canvas>
+        </div>
         <div id="game-container">
             <canvas id="game-canvas" width="320" height="640"></canvas>
             <div id="start-screen" class="overlay">
@@ -16,7 +20,12 @@
                 <p>
                     ← → : いどう<br>
                     ↑ : かいてん<br>
-                    ↓ : はやくおとす
+                    ↓ : はやくおとす<br>
+                    <br>
+                    **タッチ操作**<br>
+                    左右スワイプ: いどう<br>
+                    下スワイプ: はやくおとす<br>
+                    タップ: かいてん
                 </p>
                 <button id="start-button">ゲーム開始</button>
             </div>
@@ -26,14 +35,10 @@
                 <button id="restart-button">もう一度遊ぶ</button>
             </div>
         </div>
-        <div id="next-puyo-container" style="margin-left: 20px;">
-            <h3>つぎのぷよ</h3>
-            <canvas id="next-puyo-canvas" width="160" height="160"></canvas>
+        <div id="info-container">
+            <p>スコア: <span id="score">0</span></p>
+            <p>レベル: <span id="level">1</span></p>
         </div>
-    </div>
-    <div id="info-container">
-        <p>スコア: <span id="score">0</span></p>
-        <p>レベル: <span id="level">1</span></p>
     </div>
     <audio id="game-bgm" src="ochikon.mp3" loop></audio>
     <script src="script.js"></script>
