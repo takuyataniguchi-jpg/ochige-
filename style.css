@@ -1,20 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #E3F2FD; /* Soft Blue */
-    font-family: 'Arial Rounded MT Bold', sans-serif;
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', 'Arial Rounded MT Bold', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh; /* Use min-height to allow content to push body height */
+    justify-content: flex-start; /* Align items to the start to prevent overflow */
     margin: 0;
-    padding: 10px; /* Add some padding for small screens */
-    box-sizing: border-box; /* Include padding in element's total width and height */
+    padding: 10px;
+    min-height: 100vh; /* Keep min-height for consistent centering on larger screens */
 }
 
 h1 {
     color: #1565C0; /* Darker Blue */
     text-shadow: 1px 1px 2px #ffffff;
-    margin-bottom: 10px; /* Adjust margin */
+    margin-bottom: 10px;
 }
 
 #main-content {
@@ -23,30 +26,31 @@ h1 {
     align-items: center;
     width: 100%;
     max-width: 360px; /* Max width for the main content area */
+    padding: 5px; /* Add some internal padding */
 }
 
 #game-container {
-    position: relative; /* For positioning overlays */
-    border: 2px solid #1565C0; /* Darker Blue */
+    position: relative;
+    border: 2px solid #1565C0;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(21, 101, 192, 0.3);
-    width: 320px; /* Fixed width for game canvas */
-    height: 640px; /* Fixed height for game canvas */
-    margin-top: 10px; /* Space between next puyo and game */
+    width: 320px;
+    height: 640px;
+    margin-top: 10px;
 }
 
 canvas {
-    background-color: #E3F2FD; /* Lighter Blue */
+    background-color: #E3F2FD;
     border-radius: 8px;
-    display: block; /* Remove extra space below canvas */
+    display: block;
 }
 
 #info-container {
     display: flex;
     justify-content: space-around;
-    width: 100%; /* Take full width of main-content */
-    max-width: 320px; /* Match game container width */
-    margin-top: 10px; /* Space below game container */
+    width: 100%;
+    max-width: 320px;
+    margin-top: 5px; /* Reduced margin */
     font-size: 1.2em;
     color: #1565C0;
 }
@@ -54,17 +58,17 @@ canvas {
 #next-puyo-container {
     text-align: center;
     color: #1565C0;
-    margin-bottom: 10px; /* Space above game container */
-    width: 100%; /* Take full width of main-content */
-    max-width: 320px; /* Max width for next puyo container (same as game) */
+    margin-bottom: 5px; /* Reduced margin */
+    width: 100%;
+    max-width: 320px;
 }
 
 #next-puyo-canvas {
     border: 2px solid #1565C0;
     border-radius: 8px;
     background-color: #E3F2FD;
-    width: 320px; /* Fixed width for the canvas */
-    height: 80px; /* Fixed height for the canvas (横長) */
+    width: 320px;
+    height: 80px;
 }
 
 .overlay {
@@ -85,28 +89,28 @@ canvas {
 
 .overlay h2 {
     color: #1565C0;
-    font-size: 1.8em; /* Slightly smaller for mobile */
+    font-size: 1.8em;
     margin-bottom: 15px;
 }
 
 .overlay button {
-    background-color: #1976D2; /* Blue */
+    background-color: #1976D2;
     color: white;
     border: none;
-    padding: 12px 25px; /* Slightly smaller padding */
-    font-size: 1.1em; /* Slightly smaller font */
+    padding: 12px 25px;
+    font-size: 1.1em;
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .overlay button:hover {
-    background-color: #1565C0; /* Darker Blue */
+    background-color: #1565C0;
 }
 
 .overlay p {
     color: #1565C0;
-    font-size: 1em; /* Slightly smaller for mobile */
+    font-size: 1em;
     text-align: center;
     line-height: 1.4;
     margin-bottom: 15px;
@@ -115,7 +119,7 @@ canvas {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     body {
-        padding: 5px; /* Reduce padding on smaller screens */
+        padding: 5px;
     }
 
     h1 {
@@ -123,14 +127,14 @@ canvas {
     }
 
     #main-content {
-        max-width: 320px; /* Constrain main content width */
+        max-width: 95vw; /* Use viewport width for flexibility */
     }
 
     #game-container {
-        width: 100%; /* Make game container fill its parent */
-        height: auto; /* Allow height to adjust based on aspect ratio */
-        padding-bottom: 200%; /* Maintain 1:2 aspect ratio (height is 2x width) */
-        position: relative; /* For padding-bottom trick */
+        width: 100%;
+        height: auto;
+        padding-bottom: 200%;
+        position: relative;
     }
 
     #game-canvas {
@@ -143,18 +147,19 @@ canvas {
 
     #info-container {
         font-size: 1em;
+        margin-top: 5px; /* Reduced margin */
     }
 
     #next-puyo-container {
         margin-top: 0;
-        margin-bottom: 5px; /* Reduce margin */
-        max-width: 320px; /* Allow full width on smaller screens */
+        margin-bottom: 5px;
+        max-width: 100%; /* Allow full width on smaller screens */
     }
 
     #next-puyo-canvas {
-        width: 100%; /* Make canvas responsive within its container */
-        height: 80px; /* Keep height fixed for landscape */
-        max-width: 320px; /* Max width for the canvas */
+        width: 100%;
+        height: 80px;
+        max-width: 320px;
     }
 
     .overlay h2 {
