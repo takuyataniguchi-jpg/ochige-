@@ -5,13 +5,24 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh; /* Use min-height to allow content to push body height */
     margin: 0;
+    padding: 10px; /* Add some padding for small screens */
+    box-sizing: border-box; /* Include padding in element's total width and height */
 }
 
 h1 {
     color: #1565C0; /* Darker Blue */
     text-shadow: 1px 1px 2px #ffffff;
+    margin-bottom: 10px; /* Adjust margin */
+}
+
+#main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 360px; /* Max width for the main content area */
 }
 
 #game-container {
@@ -19,32 +30,41 @@ h1 {
     border: 2px solid #1565C0; /* Darker Blue */
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(21, 101, 192, 0.3);
+    width: 320px; /* Fixed width for game canvas */
+    height: 640px; /* Fixed height for game canvas */
+    margin-top: 10px; /* Space between next puyo and game */
 }
 
 canvas {
     background-color: #E3F2FD; /* Lighter Blue */
     border-radius: 8px;
+    display: block; /* Remove extra space below canvas */
 }
 
 #info-container {
     display: flex;
     justify-content: space-around;
-    width: 320px;
-    margin-top: 20px;
-    font-size: 1.5em;
+    width: 100%; /* Take full width of main-content */
+    max-width: 320px; /* Match game container width */
+    margin-top: 10px; /* Space below game container */
+    font-size: 1.2em;
     color: #1565C0;
 }
 
 #next-puyo-container {
-    margin-left: 20px;
     text-align: center;
     color: #1565C0;
+    margin-bottom: 10px; /* Space above game container */
+    width: 100%; /* Take full width of main-content */
+    max-width: 320px; /* Max width for next puyo container (same as game) */
 }
 
 #next-puyo-canvas {
     border: 2px solid #1565C0;
     border-radius: 8px;
     background-color: #E3F2FD;
+    width: 320px; /* Fixed width for the canvas */
+    height: 80px; /* Fixed height for the canvas (横長) */
 }
 
 .overlay {
@@ -59,20 +79,22 @@ canvas {
     justify-content: center;
     align-items: center;
     border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .overlay h2 {
     color: #1565C0;
-    font-size: 2em;
-    margin-bottom: 20px;
+    font-size: 1.8em; /* Slightly smaller for mobile */
+    margin-bottom: 15px;
 }
 
 .overlay button {
     background-color: #1976D2; /* Blue */
     color: white;
     border: none;
-    padding: 15px 30px;
-    font-size: 1.2em;
+    padding: 12px 25px; /* Slightly smaller padding */
+    font-size: 1.1em; /* Slightly smaller font */
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -80,4 +102,90 @@ canvas {
 
 .overlay button:hover {
     background-color: #1565C0; /* Darker Blue */
+}
+
+.overlay p {
+    color: #1565C0;
+    font-size: 1em; /* Slightly smaller for mobile */
+    text-align: center;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 5px; /* Reduce padding on smaller screens */
+    }
+
+    h1 {
+        font-size: 1.6em;
+    }
+
+    #main-content {
+        max-width: 320px; /* Constrain main content width */
+    }
+
+    #game-container {
+        width: 100%; /* Make game container fill its parent */
+        height: auto; /* Allow height to adjust based on aspect ratio */
+        padding-bottom: 200%; /* Maintain 1:2 aspect ratio (height is 2x width) */
+        position: relative; /* For padding-bottom trick */
+    }
+
+    #game-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #info-container {
+        font-size: 1em;
+    }
+
+    #next-puyo-container {
+        margin-top: 0;
+        margin-bottom: 5px; /* Reduce margin */
+        max-width: 320px; /* Allow full width on smaller screens */
+    }
+
+    #next-puyo-canvas {
+        width: 100%; /* Make canvas responsive within its container */
+        height: 80px; /* Keep height fixed for landscape */
+        max-width: 320px; /* Max width for the canvas */
+    }
+
+    .overlay h2 {
+        font-size: 1.4em;
+    }
+
+    .overlay button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    .overlay p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.4em;
+    }
+
+    .overlay h2 {
+        font-size: 1.2em;
+    }
+
+    .overlay button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    .overlay p {
+        font-size: 0.8em;
+    }
 }

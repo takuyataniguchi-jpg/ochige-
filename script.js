@@ -117,14 +117,38 @@ function spawnPuyo() {
 
 function drawNextPuyo() {
     nextPuyoCtx.clearRect(0, 0, nextPuyoCanvas.width, nextPuyoCanvas.height);
-    // Draw next puyo in a smaller, centered view
-    const p1 = { x: 0, y: 1, type: nextPuyoPair.puyo1 };
-    const p2 = { x: 0, y: 0, type: nextPuyoPair.puyo2 };
-    // Adjust offsets for 160x160 canvas to center the two puyos
-    const offsetX = (nextPuyoCanvas.width - BLOCK_SIZE) / 2; // Center horizontally
-    const offsetY = (nextPuyoCanvas.height - BLOCK_SIZE * 2) / 2; // Center vertically for two puyos
-    drawPuyo(p1.x, p1.y, p1.type, nextPuyoCtx, offsetX, offsetY);
-    drawPuyo(p2.x, p2.y, p2.type, nextPuyoCtx, offsetX, offsetY);
+    const nextPuyoVisualSize = BLOCK_SIZE; // Each puyo will be 40px diameter
+    const nextPuyoRadius = nextPuyoVisualSize / 2;
+    const puyoGap = 20; // Gap between the two puyos
+
+    const p1 = { x: 0, y: 0, type: nextPuyoPair.puyo1 };
+    const p2 = { x: 1, y: 0, type: nextPuyoPair.puyo2 };
+
+    // Calculate total width needed for two puyos with the gap
+    const contentWidth = (nextPuyoVisualSize * 2) + puyoGap;
+    const offsetX = (nextPuyoCanvas.width - contentWidth) / 2;
+    const offsetY = (nextPuyoCanvas.height - nextPuyoVisualSize) / 2;
+
+    const drawNextPuyoSingle = (puyoIndex, type, context, ox, oy) => {
+        if (type) {
+            // Calculate x position based on puyoIndex (0 for first, 1 for second)
+            // and add the gap for the second puyo
+            const xPos = puyoIndex * (nextPuyoVisualSize + puyoGap) + ox;
+            const yPos = oy; // y position is just the overall offsetY
+
+            context.fillStyle = ANIMAL_COLORS[type] || '#FFFFFF';
+            context.beginPath();
+            context.arc(xPos + nextPuyoRadius, yPos + nextPuyoRadius, nextPuyoRadius - 1, 0, Math.PI * 2);
+            context.fill();
+            context.font = `${nextPuyoRadius * 1.5}px sans-serif`;
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(type, xPos + nextPuyoRadius, yPos + nextPuyoRadius + 2);
+        }
+    };
+
+    drawNextPuyoSingle(0, p1.type, nextPuyoCtx, offsetX, offsetY);
+    drawNextPuyoSingle(1, p2.type, nextPuyoCtx, offsetX, offsetY);
 }
 
 function drawGameState() {
