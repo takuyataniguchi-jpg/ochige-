@@ -264,7 +264,7 @@ document.addEventListener('keydown', (e) => {
             break;
         case 'ArrowRight':
             currentPuyoPair.move(1, 0);
-            if (isCollision()) currentPuyoPair.move(-1, 0);
+            if (isCollision()) currentPuyoPair.move(1, 0);
             break;
         case 'ArrowDown':
             updateGameLogic();
@@ -282,6 +282,70 @@ document.addEventListener('keydown', (e) => {
                 }
             }
             break;
+    }
+});
+
+// Touch controls
+let touchStartX = 0;
+let touchStartY = 0;
+let touchMoved = false;
+
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Prevent scrolling
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+});
+
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault(); // Prevent scrolling
+    if (!currentPuyoPair || isProcessing) return;
+
+    const touchCurrentX = e.touches[0].clientX;
+    const touchCurrentY = e.touches[0].clientY;
+
+    const dx = touchCurrentX - touchStartX;
+    const dy = touchCurrentY - touchStartY;
+
+    // Determine if it's a significant move
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+        touchMoved = true;
+    }
+
+    // Horizontal swipe
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) { // Threshold for horizontal swipe
+        if (dx > 0) {
+            currentPuyoPair.move(1, 0);
+            if (isCollision()) currentPuyoPair.move(-1, 0);
+        } else {
+            currentPuyoPair.move(-1, 0);
+            if (isCollision()) currentPuyoPair.move(1, 0);
+        }
+        touchStartX = touchCurrentX; // Reset start X to allow continuous swiping
+    }
+    // Vertical swipe (fast drop)
+    else if (dy > 50) { // Threshold for fast drop
+        updateGameLogic();
+        touchStartY = touchCurrentY; // Reset start Y to prevent multiple drops from one swipe
+    }
+});
+
+canvas.addEventListener('touchend', (e) => {
+    if (!currentPuyoPair || isProcessing) return;
+
+    // If it was a tap (not a significant move), rotate
+    if (!touchMoved) {
+        currentPuyoPair.rotate();
+        if (isCollision()) {
+            currentPuyoPair.move(1, 0);
+            if (isCollision()) {
+                currentPuyoPair.move(-2, 0);
+                if (isCollision()) {
+                    currentPuyoPair.move(1, 0);
+                    currentPuyoPair.rotation = (currentPuyoPair.rotation + 3) % 4;
+                }
+            }
+        }
     }
 });
 
