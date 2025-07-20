@@ -14,11 +14,12 @@ const restartButton = document.getElementById('restart-button');
 const gameBGM = document.getElementById('game-bgm');
 
 // Next Puyo Elements
-const nextPuyoCanvas = document.getElementById('next-puyo-canvas');
-const nextPuyoCtx = nextPuyoCanvas.getContext('2d');
+// const nextPuyoCanvas = document.getElementById('next-puyo-canvas');
+// const nextPuyoCtx = nextPuyoCanvas.getContext('2d');
 
 const COLS = 8;
-const ROWS = 16;
+const ROWS = 14; // Game area is 14 rows
+const GAME_OFFSET_Y = 2; // Offset for game grid on canvas (2 rows for next puyo)
 const BLOCK_SIZE = 40;
 const RADIUS = BLOCK_SIZE / 2;
 
@@ -67,7 +68,7 @@ class Particle {
 
 function createBurstEffect(gridX, gridY, type) {
     const centerX = gridX * BLOCK_SIZE + RADIUS;
-    const centerY = gridY * BLOCK_SIZE + RADIUS;
+    const centerY = (gridY + GAME_OFFSET_Y) * BLOCK_SIZE + RADIUS; // Adjust for offset
     const color = ANIMAL_COLORS[type];
     for (let i = 0; i < 15; i++) particles.push(new Particle(centerX, centerY, color));
 }
@@ -75,7 +76,7 @@ function createBurstEffect(gridX, gridY, type) {
 class PuyoPair {
     constructor(puyo1 = null, puyo2 = null) {
         this.x = Math.floor(COLS / 2) - 1;
-        this.y = 0;
+        this.y = 0; // Relative to game grid
         this.puyo1 = puyo1 || ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
         this.puyo2 = puyo2 || ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
         this.rotation = 0;
@@ -95,71 +96,55 @@ class PuyoPair {
     rotate() { this.rotation = (this.rotation + 1) % 4; }
 }
 
-function drawPuyo(x, y, type, context = ctx, offsetX = 0, offsetY = 0) {
+function drawPuyo(x, y, type, context = ctx, yOffset = 0) {
     if (type) {
         context.fillStyle = ANIMAL_COLORS[type] || '#FFFFFF';
         context.beginPath();
-        context.arc(x * BLOCK_SIZE + RADIUS + offsetX, y * BLOCK_SIZE + RADIUS + offsetY, RADIUS - 1, 0, Math.PI * 2);
+        context.arc(x * BLOCK_SIZE + RADIUS, (y + yOffset) * BLOCK_SIZE + RADIUS, RADIUS - 1, 0, Math.PI * 2);
         context.fill();
         context.font = `${RADIUS * 1.5}px sans-serif`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.fillText(type, x * BLOCK_SIZE + RADIUS + offsetX, y * BLOCK_SIZE + RADIUS + offsetY + 2);
+        context.fillText(type, x * BLOCK_SIZE + RADIUS, (y + yOffset) * BLOCK_SIZE + RADIUS + 2);
     }
 }
 
 function spawnPuyo() {
     currentPuyoPair = nextPuyoPair || new PuyoPair();
     nextPuyoPair = new PuyoPair();
-    drawNextPuyo();
     if (isCollision()) gameOver();
 }
 
 function drawNextPuyo() {
-    nextPuyoCtx.clearRect(0, 0, nextPuyoCanvas.width, nextPuyoCanvas.height);
-    const nextPuyoVisualSize = BLOCK_SIZE; // Each puyo will be 40px diameter
-    const nextPuyoRadius = nextPuyoVisualSize / 2;
-    const puyoGap = 20; // Gap between the two puyos
-
-    const p1 = { x: 0, y: 0, type: nextPuyoPair.puyo1 };
-    const p2 = { x: 1, y: 0, type: nextPuyoPair.puyo2 };
-
-    // Calculate total width needed for two puyos with the gap
-    const contentWidth = (nextPuyoVisualSize * 2) + puyoGap;
-    const offsetX = (nextPuyoCanvas.width - contentWidth) / 2;
-    const offsetY = (nextPuyoCanvas.height - nextPuyoVisualSize) / 2;
-
-    const drawNextPuyoSingle = (puyoIndex, type, context, ox, oy) => {
-        if (type) {
-            // Calculate x position based on puyoIndex (0 for first, 1 for second)
-            // and add the gap for the second puyo
-            const xPos = puyoIndex * (nextPuyoVisualSize + puyoGap) + ox;
-            const yPos = oy; // y position is just the overall offsetY
-
-            context.fillStyle = ANIMAL_COLORS[type] || '#FFFFFF';
-            context.beginPath();
-            context.arc(xPos + nextPuyoRadius, yPos + nextPuyoRadius, nextPuyoRadius - 1, 0, Math.PI * 2);
-            context.fill();
-            context.font = `${nextPuyoRadius * 1.5}px sans-serif`;
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-            context.fillText(type, xPos + nextPuyoRadius, yPos + nextPuyoRadius + 2);
-        }
-    };
-
-    drawNextPuyoSingle(0, p1.type, nextPuyoCtx, offsetX, offsetY);
-    drawNextPuyoSingle(1, p2.type, nextPuyoCtx, offsetX, offsetY);
+    // Draw next puyo at the top of the main canvas (y=0 and y=1)
+    const p1 = { x: 3, y: 0, type: nextPuyoPair.puyo1 }; // Centered horizontally
+    const p2 = { x: 4, y: 0, type: nextPuyoPair.puyo2 }; // Centered horizontally
+    drawPuyo(p1.x, p1.y, p1.type, ctx, 0); // yOffset is 0 for next puyo
+    drawPuyo(p2.x, p2.y, p2.type, ctx, 0); // yOffset is 0 for next puyo
 }
 
 function drawGameState() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw next puyo
+    drawNextPuyo();
+
+    // Draw a line below the next puyo area
+    ctx.strokeStyle = '#AAAAAA'; // Light gray line
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, GAME_OFFSET_Y * BLOCK_SIZE);
+    ctx.lineTo(canvas.width, GAME_OFFSET_Y * BLOCK_SIZE);
+    ctx.stroke();
+
+    // Draw game grid
     for (let y = 0; y < ROWS; y++) {
         for (let x = 0; x < COLS; x++) {
-            drawPuyo(x, y, grid[y][x]);
+            drawPuyo(x, y, grid[y][x], ctx, GAME_OFFSET_Y);
         }
     }
     if (currentPuyoPair) {
-        currentPuyoPair.getPuyoPositions().forEach(p => drawPuyo(p.x, p.y, p.type));
+        currentPuyoPair.getPuyoPositions().forEach(p => drawPuyo(p.x, p.y, p.type, ctx, GAME_OFFSET_Y));
     }
     particles.forEach(p => p.draw());
 }
@@ -288,7 +273,7 @@ document.addEventListener('keydown', (e) => {
             break;
         case 'ArrowRight':
             currentPuyoPair.move(1, 0);
-            if (isCollision()) currentPuyoPair.move(1, 0);
+            if (isCollision()) currentPuyoPair.move(-1, 0);
             break;
         case 'ArrowDown':
             updateGameLogic();

@@ -2,16 +2,24 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: #E3F2FD; /* Soft Blue */
-    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', 'Arial Rounded MT Bold', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Align items to the start to prevent overflow */
-    margin: 0;
+    justify-content: center; /* Align items to the center */
     padding: 10px;
-    min-height: 100vh; /* Keep min-height for consistent centering on larger screens */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh; /* Ensure body takes full viewport height */
 }
 
 h1 {
@@ -26,7 +34,9 @@ h1 {
     align-items: center;
     width: 100%;
     max-width: 360px; /* Max width for the main content area */
-    padding: 5px; /* Add some internal padding */
+    padding: 5px;
+    height: 100%; /* Take full height of parent (body) */
+    justify-content: space-between; /* Distribute space between items */
 }
 
 #game-container {
@@ -34,15 +44,22 @@ h1 {
     border: 2px solid #1565C0;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(21, 101, 192, 0.3);
-    width: 320px;
-    height: 640px;
-    margin-top: 10px;
+    width: 100%; /* Make it responsive */
+    max-width: 320px; /* Max width of the game area */
+    height: auto; /* Allow height to adjust */
+    padding-bottom: 200%; /* Maintain 1:2 aspect ratio (height is 2x width) */
+    margin-top: 5px; /* Reduced margin */
 }
 
 canvas {
     background-color: #E3F2FD;
     border-radius: 8px;
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #info-container {
@@ -55,21 +72,7 @@ canvas {
     color: #1565C0;
 }
 
-#next-puyo-container {
-    text-align: center;
-    color: #1565C0;
-    margin-bottom: 5px; /* Reduced margin */
-    width: 100%;
-    max-width: 320px;
-}
 
-#next-puyo-canvas {
-    border: 2px solid #1565C0;
-    border-radius: 8px;
-    background-color: #E3F2FD;
-    width: 320px;
-    height: 80px;
-}
 
 .overlay {
     position: absolute;
@@ -127,7 +130,7 @@ canvas {
     }
 
     #main-content {
-        max-width: 95vw; /* Use viewport width for flexibility */
+        max-width: 100%; /* Use 100% for flexibility */
     }
 
     #game-container {
@@ -147,19 +150,7 @@ canvas {
 
     #info-container {
         font-size: 1em;
-        margin-top: 5px; /* Reduced margin */
-    }
-
-    #next-puyo-container {
-        margin-top: 0;
-        margin-bottom: 5px;
-        max-width: 100%; /* Allow full width on smaller screens */
-    }
-
-    #next-puyo-canvas {
-        width: 100%;
-        height: 80px;
-        max-width: 320px;
+        margin-top: 5px;
     }
 
     .overlay h2 {
