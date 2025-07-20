@@ -4,18 +4,18 @@ const scoreElement = document.getElementById('score');
 const levelElement = document.getElementById('level');
 
 // UI Elements
-const startScreen = document.getElementById('start-screen');
-const startButton = document.getElementById('start-button');
+const titleScreen = document.getElementById('title-screen');
+const titleStartButton = document.getElementById('title-start-button');
+const mainContent = document.getElementById('main-content');
+// const gameInstructionsOverlay = document.getElementById('game-instructions-overlay'); // Removed
+// const startButton = document.getElementById('start-button'); // Removed
 const gameOverScreen = document.getElementById('game-over-screen');
 const finalScoreElement = document.getElementById('final-score');
 const restartButton = document.getElementById('restart-button');
+const backToTitleButton = document.getElementById('back-to-title-button');
 
 // Audio Element
 const gameBGM = document.getElementById('game-bgm');
-
-// Next Puyo Elements
-// const nextPuyoCanvas = document.getElementById('next-puyo-canvas');
-// const nextPuyoCtx = nextPuyoCanvas.getContext('2d');
 
 const COLS = 8;
 const ROWS = 14; // Game area is 14 rows
@@ -102,7 +102,7 @@ function drawPuyo(x, y, type, context = ctx, yOffset = 0) {
         context.beginPath();
         context.arc(x * BLOCK_SIZE + RADIUS, (y + yOffset) * BLOCK_SIZE + RADIUS, RADIUS - 1, 0, Math.PI * 2);
         context.fill();
-        context.font = `${RADIUS * 1.5}px sans-serif`;
+        context.font = `${RADIUS * 1.5}px "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillText(type, x * BLOCK_SIZE + RADIUS, (y + yOffset) * BLOCK_SIZE + RADIUS + 2);
@@ -387,7 +387,9 @@ function init() {
 }
 
 function startGame() {
-    startScreen.style.display = 'none';
+    titleScreen.style.display = 'none';
+    mainContent.style.display = 'flex';
+    // gameInstructionsOverlay.style.display = 'flex'; // Removed
     gameOverScreen.style.display = 'none';
     init();
     spawnPuyo(); // Spawn first puyo and next puyo
@@ -395,6 +397,14 @@ function startGame() {
     animationFrameId = requestAnimationFrame(render);
     gameBGM.play(); // Play BGM
 }
+
+// function dismissInstructionsAndStartGame() { // Removed
+//     gameInstructionsOverlay.style.display = 'none';
+//     spawnPuyo();
+//     updateFallSpeed();
+//     animationFrameId = requestAnimationFrame(render);
+//     gameBGM.play();
+// }
 
 function gameOver() {
     clearInterval(gameLoopId);
@@ -405,8 +415,16 @@ function gameOver() {
     gameBGM.currentTime = 0; // Reset BGM to start
 }
 
-startButton.addEventListener('click', startGame);
-restartButton.addEventListener('click', startGame);
+function goToTitleScreen() {
+    gameOverScreen.style.display = 'none';
+    mainContent.style.display = 'none';
+    titleScreen.style.display = 'flex';
+}
 
-init();
-drawGameState();
+titleStartButton.addEventListener('click', startGame);
+// startButton.addEventListener('click', dismissInstructionsAndStartGame); // Removed
+restartButton.addEventListener('click', startGame); // Changed to startGame
+backToTitleButton.addEventListener('click', goToTitleScreen);
+
+// init(); // Removed
+// drawGameState(); // Removed

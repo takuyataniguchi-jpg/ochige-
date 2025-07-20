@@ -10,7 +10,7 @@ html, body {
 
 body {
     background-color: #E3F2FD; /* Soft Blue */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,6 +37,52 @@ h1 {
     padding: 5px;
     height: 100%; /* Take full height of parent (body) */
     justify-content: space-between; /* Distribute space between items */
+}
+
+#title-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(227, 242, 253, 1); /* Opaque background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+#title-screen h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+#title-screen h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#title-screen p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+#title-start-button {
+    background-color: #1976D2; /* Blue */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.5em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#title-start-button:hover {
+    background-color: #1565C0; /* Darker Blue */
 }
 
 #game-container {
@@ -90,6 +136,22 @@ canvas {
     box-sizing: border-box;
 }
 
+#game-instructions-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(227, 242, 253, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 .overlay h2 {
     color: #1565C0;
     font-size: 1.8em;
@@ -117,6 +179,10 @@ canvas {
     text-align: center;
     line-height: 1.4;
     margin-bottom: 15px;
+}
+
+#game-over-screen button {
+    margin-top: 10px; /* Space between buttons */
 }
 
 /* Responsive adjustments */
@@ -164,6 +230,23 @@ canvas {
 
     .overlay p {
         font-size: 0.9em;
+    }
+
+    #title-screen h1 {
+        font-size: 2.5em;
+    }
+
+    #title-screen h2 {
+        font-size: 1.2em;
+    }
+
+    #title-screen p {
+        font-size: 0.9em;
+    }
+
+    #title-start-button {
+        padding: 12px 25px;
+        font-size: 1.2em;
     }
 }
 
