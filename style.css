@@ -19,7 +19,8 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh; /* Ensure body takes full viewport height */
+    height: 100%; /* Ensure body takes full viewport height */
+    overflow: hidden; /* Prevent body scrolling */
 }
 
 h1 {
@@ -37,6 +38,7 @@ h1 {
     padding: 5px;
     height: 100%; /* Take full height of parent (body) */
     justify-content: space-between; /* Distribute space between items */
+    flex-grow: 1; /* Allow main-content to grow and fill available space */
 }
 
 #title-screen {
